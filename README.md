@@ -1,3 +1,3 @@
 # TypeScriptCheatSheet
 
-[InferFuncArgType.md](InferFuncArgType.md)
+- [Infer Function Arguments Type](InferFuncArgType.md)
