@@ -1,4 +1,4 @@
-# Infer Function Argument Type
+# Infer Function Arguments Type
 
 For a function that accepts an argument of an anonymous type where `hobbies` is a tuple:
 ```TS
