@@ -81,17 +81,17 @@ stringifyPerson(alex3); /* No TypeScript errors */
 `type NeverType = FuncFirstArgumentType<number>;`
 
 It would be better to restrict `T` to functions only. Lets do it:
-```
+```TS
 type FuncFirstArgumentTypeFixed<T extends (...args: any[]) => any> = T extends (first: infer TFirst, ...args: any[]) => any
     ? TFirst
     : never;
 ```
 
 **Now it won't accept anything except function:**
-```
+```TS
 type CompilerError = FuncFirstArgumentTypeFixed<number>; // Error: Type 'number' does not satisfy the constraint '(...args: any[]) => any'.
 ```
-```
+```TS
 function testFunc(n: number, s: string) { }
 type Test2FuncType = FuncFirstArgumentTypeFixed<typeof testFunc>; // `number`
 ```
@@ -99,13 +99,13 @@ type Test2FuncType = FuncFirstArgumentTypeFixed<typeof testFunc>; // `number`
 ## Function with no argumetns
 What happens if we pass the type of the function without a single argument?
  We will get `unknown`.
-```
+```TS
 function zeroArgsFunc() { }
 type zeroArgsFuncType = FuncFirstArgumentTypeFixed<typeof zeroArgsFunc>; // `unknown`
 ```
 It is not exactly what we would like. It's much better to get `never'. 
 That's what we'll do:
-```
+```TS
 type FuncFirstArgumentType<T extends (...args: any[]) => any> = 
     T extends (...args: []) => any // Step 1: Check if the function has zero arguments..
         ? never             // Step 2: If yes, return `never`.
@@ -114,7 +114,7 @@ type FuncFirstArgumentType<T extends (...args: any[]) => any> =
             : never;        // Step 5: If the function doesn't match the pattern, return `never`.
 ```
 or another alternative:
-```
+```TS
 type FuncFirstArgumentType<T extends (...args: any[]) => any> = 
     Parameters<T> extends [infer TFirst, ...any[]]  // utility type `Parameters<T>` returns a tuple of the argument types for the function `T`, it ensures that the function has at least one argument by checking that the tuple starts with `TFirst` and can have additional arguments `(...any[])`
         ? TFirst 
@@ -123,7 +123,7 @@ type FuncFirstArgumentType<T extends (...args: any[]) => any> =
 ## Improve `T` parameter restriction to function with arguments (no solutions!)
 You may want make further improvements to restict function type argument to a function with at least 1 argument. Anfortunately there is no sulution for that. 
 You may try something like this
-```
+```TS
     type FuncFirstArgumentTypeChecked<T extends (...args: any[]) => any> = 
         T extends (...args: []) => any // Check if the function has zero arguments..
             ? never             // If yes, return `never`.
