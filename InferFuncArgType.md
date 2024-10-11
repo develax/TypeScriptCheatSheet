@@ -116,5 +116,19 @@ type FuncFirstArgumentType<T extends (...args: any[]) => any> =
         ? TFirst 
         : never;
 ```
+### Improve `T` parameter restriction to function with arguments
+You may want make further improvements to restict function type argument to a function with at least 1 argument. Anfortunately there is no sulution for that. 
+You may try something like this
+```
+    type FuncFirstArgumentTypeChecked<T extends (...args: any[]) => any> = 
+        T extends (...args: []) => any // Check if the function has zero arguments..
+            ? never             // If yes, return `never`.
+            : T;
+
+    type FuncFirstArgumentType<T extends FuncFirstArgumentTypeChecked<T>> = T extends (first: infer TFirst, ...args: any[]) => any // Error: Type parameter 'T' has a circular constraint.(2313)
+            ? TFirst 
+            : never;
+```
+but the compiler will error: `Type parameter 'T' has a circular constraint.(2313)`
 
 [PLAYGROUND](https://www.typescriptlang.org/play/?#code/PTAEEFQMwVwOwMYBcCWB7OokAsCGTRcEEBTAByQGdDNcAnAcxgFsS4C0oaaMBPZtDGpJeZEqADu2EnXHY0AIwUoS1FNVxYYZADYkAXAChDsRKgyhKSOijgMUUXgAUZlDAAoxdN3H2gA3oagwaBwuKx+VjZ2ANxBIbgMBqEsCjJxIaDySiqUfgDaUbYMADSW1sUAujGgIFq6JIYAvgCUAfHBskgwdJgABgAk-l4+AHRhrE2g6qBDIxijiSRTvCT01Gg6ACY0OzpoAG6qs8OuC9nKqqMAVmi27gBEu8EPLU2jfXFNxnUIsvjiTSUFDMFA6ehYUQGYwIDBWQh6AAeoAAvO1MhNkgBycBIrElDqEJJ+ABMAAYCZkLrkCliJLgdABrYr40BY2FoZl2LGVWpgaSyNnU1R9aYaOh0XC8MpwNAEbpkBqRCp2fK8gCEaMKKtK5WiDEqzR+YGsvGKWDQoAQDJ0WGk0HgyHQmAkKBwCJIyNw4qYrHYkjBtutQkBmBkdDQdCMhiKdgczjOcHcDM9LRqdQAKlC9cU1WLQnLCJRgQwwgo9BbIWJQNr9WVYwbjaAADIkJBY6hbEgIcGCkTVm0ob0B90KvTR-viFzeCxowIY8LJBsZBLElLMNJ0FfBYV5GsN+s66p8+p6I2GOq4OA7P5rJChuUCwiMFhsDhcHAzSegT26FAIN0dF4aNYTgeEU0REk-GnHxUXREJMT8HE8UpVdknJVCd0US493yOkGS5BhWXZNBORZXk6llCRpgIL9tArNE+lrYpD31So+nPOocDYK0bTtcRTCdDBowbeMYI8CCSTTE8qJojtQAAeUZJsAHU8ForheEEUAtgwLECHpf0kEtW8AR-RE-wA+UoQAflAABJMD71wHYtJgUBmClSQr3lS1bCgGR+KrASI2YILGSozBBPMWgXz9JBRlAAAxSM7XwUA3N4zBTPvQhQCSOAZH-YK0oIa1MH8wKcHS78oFStzRmMb8ksdJKUG8JBwDit8szEAAeDMAD44Izcz72vah3CgdqrD8Sq6FADM2o6spRjW+gGD3K9eDVNoUWG7b4jspaZqQeI-EKo4tybK8diSeV1OCids3EuBHICiUSC2XrxDRFrEGWqwut9HqoT6ydOBzONHFewa4gvMAM3tV73vDL6fvzFAu3Yf8GUrX8dH-QDeB0kgdGtWQdlekrbqy0A0lAEMdm4yxF284CYThAgIIAZmgxNUc+77sznQlELZXFPXxQkllJClCV3Wl6SZFkyhIsjuQosA3XzMdftAJiDyhg0OO+BHeJ0Qm7CC6LnQDS3eJDAsfwlSM8mMUSYcTZMkR56TgAAKlAAA5S0foAZT+FAKBdiNvFAAOwCAA)
