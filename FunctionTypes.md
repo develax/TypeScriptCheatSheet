@@ -20,6 +20,7 @@ type TFnAlt = {
 const toStrTAlt: TFnAlt = x => '' + x;
 ```
 
+`IFn` & `TFnAlt` are useful  with  overloaded  function  signatures.
 
 ## Function Signature Types
 
