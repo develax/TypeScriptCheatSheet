@@ -20,6 +20,7 @@ type TFnAlt = {
 const toStrTAlt: TFnAlt = x => '' + x;
 ```
 
+
 ## Function Signature Types
 
 ### A function wrapper with the same signature
@@ -35,6 +36,7 @@ const fetchSafely: typeof fetch = async (input, init) => {
     return response;
 }
 ```
+
 
 ### A function wrapper with the same arguments but different return type
 
