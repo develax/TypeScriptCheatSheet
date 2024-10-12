@@ -19,3 +19,10 @@ type TStateWithPop = IState & {
     population: number; 
 };
 ```
+
+Interfaces can't extend types that are uniuons:
+
+```TS
+type TTypes = string | number;
+interface ITest extends TTypes { } // Error: An interface can only extend an object type or intersection of object types with statically known members.
+```
