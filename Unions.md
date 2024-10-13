@@ -21,13 +21,17 @@ const person: Person = {
 
 [PLAYGROUND](https://www.typescriptlang.org/play/?#code/C4TwDgpgBAysBOBLAdgcwNIRAZygXigHIAzRebYAOQEMBbCQqAHyIBtqKb7CBuAKFCQolAK60ARhHiYc+ItVQN+A8NAAKU7AHtkcgN58oRqAG0ZUFLAQoMWbAF0AXFApI0-AL5QAZFAPHTc0tRCSkZB2dkMUl4Tz4+AGMdCihIch1nDXTdAn9jBQhnACYAVgAaQ2NScio6QqgAIgBZangQBoqA9k465wa1LTAwFGwGvg8gA)
 
-## Unions
+## Types priority in Unions
 ```TS
-type AlwaysString = string | never; // always 'string'
-type StringOrNumber = string | number | never; // 'never' always loses
-type Any = any | string | number | never; // 'any' always wins
-type Unknown = unknown | string | number | never; // 'unknown' always wins
-type Any2 = any | unknown | string | number | never; // 'any' wins 'unknown'
+// 'never' always loses
+type AlwaysString = string | never; 
+type StringOrNumber = string | number | never;
+
+// 'any' always wins
+type Any = any | string | number | never | unknown;
+
+// 'unknown' wins in absence of `any`
+type Unknown = unknown | string | number | never; 
 ```
 
 ## Conditional types and unions
